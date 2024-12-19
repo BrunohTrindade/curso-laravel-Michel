@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Mail;
 
 class EmpresaController extends Controller
 {
-    // Listar todas as empresas do usuário autenticado
     public function index()
     {
         $empresas = auth()->user()->empresas; // Obtém apenas as empresas do usuário autenticado
