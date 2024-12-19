@@ -32,7 +32,7 @@ jobs:
             # Passo 4: Comandos de deploy
             cd /var/www/curso-laravel-Michel  # Altere para o diretório do seu projeto
             git pull origin main  # Faz o pull das últimas mudanças
-            composer install --no-dev --optimize-autoloader  # Instala as dependências
+            composer install # Instala as dependências
             php artisan migrate --force  # Roda as migrações (forçado para produção)
             php artisan key:generate  # Gera a chave do aplicativo, se necessário
             php artisan db:seed --force  # Executa o seeder, se necessário
