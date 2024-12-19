@@ -30,7 +30,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}  # Chave privada
           script: |
             # Passo 4: Comandos de deploy
-            cd /var/www/seu-projeto  # Altere para o diretório do seu projeto
+            cd /var/www/curso-laravel-Michel  # Altere para o diretório do seu projeto
             git pull origin main  # Faz o pull das últimas mudanças
             composer install --no-dev --optimize-autoloader  # Instala as dependências
             php artisan migrate --force  # Roda as migrações (forçado para produção)
