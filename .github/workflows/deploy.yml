@@ -24,7 +24,7 @@ jobs:
       - name: Deploy project via SSH
         uses: appleboy/ssh-action@v0.1.0
         with:
-          host: ${{ secrets.SERVER_HOST }}  # IP ou domínio do servidor
+          host: ${{ secrets.SERVER_HOST }}  # IP ou domínio
           username: ${{ secrets.SERVER_USERNAME }}  # Nome de usuário SSH no servidor
           key: ${{ secrets.SSH_PRIVATE_KEY }}  # Chave privada
           port: 22  # Porta SSH
