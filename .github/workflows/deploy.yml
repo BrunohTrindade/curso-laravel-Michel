@@ -3,7 +3,7 @@ name: Deploy to Production
 on:
   push:
     branches:
-      - main  # Altere para a branch que você usa para deploy
+      - main  # Substitua por sua branch, se necessário
 
 jobs:
   deploy:
@@ -26,8 +26,8 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST }}  # IP ou domínio do servidor
           username: ${{ secrets.SERVER_USERNAME }}  # Nome de usuário SSH no servidor
-          port: 22  # Porta SSH
           key: ${{ secrets.SSH_PRIVATE_KEY }}  # Chave privada
+          port: 22  # Porta SSH
           script: |
             # Passo 4: Comandos de deploy
             cd /var/www/curso-laravel-Michel  # Altere para o diretório do seu projeto
