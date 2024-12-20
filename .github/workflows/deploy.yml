@@ -1,38 +1,34 @@
-name: Deploy to Production
+name: Deploy Laravel Application
 
 on:
   push:
     branches:
-      - main  # Substitua por sua branch, se necessário
+      - main  # Altere para a branch que você deseja monitorar
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Passo 1: Fazer o checkout do repositório
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      # Passo 2: Configurar a chave SSH para autenticação
-      - name: Set up SSH key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Usando a chave privada do Secret
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'  # Altere para a versão do PHP que você está usando
+        extensions: mbstring, xml, bcmath, curl, zip, gd, mysqli, pdo, pdo_mysql
 
-      # Passo 3: Conectar ao servidor e rodar comandos de deploy
-      - name: Deploy project via SSH
-        uses: appleboy/ssh-action@v0.1.0
-        with:
-          host: ${{ secrets.SERVER_HOST }}  # IP ou domínio
-          username: ${{ secrets.SERVER_USERNAME }}  # Nome de usuário SSH no servidor
-          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Chave privada
-          port: 22  # Porta SSH
-          script: |
-            # Passo 4: Comandos de deploy
-            cd /var/www/curso-laravel-Michel  # Altere para o diretório do seu projeto
-            git pull origin main  # Faz o pull das últimas mudanças
-            composer install # Instala as dependências
-            php artisan migrate --force  # Roda as migrações (forçado para produção)
-            php artisan key:generate  # Gera a chave do aplicativo, se necessário
-            php artisan db:seed --force  # Executa o seeder, se necessário
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to server
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} << 'EOF'
+          cd ${{ secrets.SERVER_ROOT_DIR }}  # Altere para o diretório do seu projeto
+          git pull origin main
+          composer install --no-dev --optimize-autoloader
+          exit
+        EOF
